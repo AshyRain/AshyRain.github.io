@@ -1,5 +1,5 @@
 @font-face {
-  font-family: '霞鹜文楷等宽';
+  font-family: 'LXGW WenKai Mono';
   src: url("/font/LXGWWenKaiMono-Regular.ttf");
   font-weight: normal;
   font-style: normal;
@@ -129,7 +129,7 @@ table:not([class]) tr:hover {
   background: var(--block);
 }
 *[ff=title] {
-  font-family: system-ui, "霞鹜文楷等宽", "Segoe UI", -apple-system, Roboto, Ubuntu, "Helvetica Neue", Arial, "WenQuanYi Micro Hei", sans-serif;
+  font-family: system-ui, "Mircrosoft Yahei", "Segoe UI", -apple-system, Roboto, Ubuntu, "Helvetica Neue", Arial, "WenQuanYi Micro Hei", sans-serif;
 }
 blockquote {
   display: block;
@@ -700,7 +700,7 @@ table:not([class]) {
   outline: none;
 }
 html {
-  font-family: system-ui, "霞鹜文楷等宽", "Segoe UI", -apple-system, Roboto, Ubuntu, "Helvetica Neue", Arial, "WenQuanYi Micro Hei", sans-serif;
+  font-family: system-ui, "Mircrosoft Yahei", "Segoe UI", -apple-system, Roboto, Ubuntu, "Helvetica Neue", Arial, "WenQuanYi Micro Hei", sans-serif;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -4060,7 +4060,7 @@ nav.menu a.nav-item:hover {
   padding: 0.5rem 0;
   line-height: 1;
   box-sizing: border-box;
-  font-family: system-ui, "霞鹜文楷等宽", "Segoe UI", -apple-system, Roboto, Ubuntu, "Helvetica Neue", Arial, "WenQuanYi Micro Hei", sans-serif;
+  font-family: system-ui, "Mircrosoft Yahei", "Segoe UI", -apple-system, Roboto, Ubuntu, "Helvetica Neue", Arial, "WenQuanYi Micro Hei", sans-serif;
   color: var(--text-p0);
 }
 .search-wrapper.noresult .search-icon {
