@@ -20,18 +20,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>ConfigurationProperties注解详解 - Ice's Blog</title>
+  <title>Spring注解@PropertySource - Ice's Blog</title>
 
   
-    <meta name="description" content="文章参考https:&#x2F;&#x2F;blog.csdn.net&#x2F;skh2015java&#x2F;article&#x2F;details&#x2F;120141409 @ConfigurationProperties注解用于获取配置文件中的属性定义并绑定到Java Bean上 该注解适用于具有相同前缀的属性，可以将配置文件中xxx开头的属性绑定到config里 12@ConfigurationProperties(prefix &#x3D; &amp;q">
+    <meta name="description" content="@PropertySource用于指定资源文件读取的位置   可以读取properties、xml、yml文件 可以通过YAML解析器搭配自定义PropertySourceFactory实现解析YAML文件 源码： 12345678910111213141516171819202122232425package org.springframework.context.annotation;imp">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ConfigurationProperties注解详解">
-<meta property="og:url" content="http://example.com/2023/08/24/ConfigurationProperties%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:title" content="Spring注解@PropertySource">
+<meta property="og:url" content="http://example.com/2023/08/24/PropertySource%E6%B3%A8%E8%A7%A3/index.html">
 <meta property="og:site_name" content="Ice&#39;s Blog">
-<meta property="og:description" content="文章参考https:&#x2F;&#x2F;blog.csdn.net&#x2F;skh2015java&#x2F;article&#x2F;details&#x2F;120141409 @ConfigurationProperties注解用于获取配置文件中的属性定义并绑定到Java Bean上 该注解适用于具有相同前缀的属性，可以将配置文件中xxx开头的属性绑定到config里 12@ConfigurationProperties(prefix &#x3D; &amp;q">
+<meta property="og:description" content="@PropertySource用于指定资源文件读取的位置   可以读取properties、xml、yml文件 可以通过YAML解析器搭配自定义PropertySourceFactory实现解析YAML文件 源码： 12345678910111213141516171819202122232425package org.springframework.context.annotation;imp">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-08-24T07:54:48.000Z">
-<meta property="article:modified_time" content="2023-08-24T08:07:32.253Z">
+<meta property="article:published_time" content="2023-08-24T08:34:25.692Z">
+<meta property="article:modified_time" content="2023-08-24T08:39:16.391Z">
 <meta property="article:author" content="Ice">
 <meta name="twitter:card" content="summary">
   
@@ -84,7 +84,9 @@
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
 
-<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">ConfigurationProperties注解详解</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86%E5%B1%9E%E6%80%A7%E7%BB%91%E5%AE%9A%E5%88%B0-Bean%E6%B3%A8%E9%87%8A%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%8A"><span class="toc-text">将属性绑定到@Bean注释的方法上</span></a></li></ol></div></div></widget>
+
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2023/08/24/PropertySource%E6%B3%A8%E8%A7%A3/"><span class="title">Spring注解@PropertySource</span></a><a class="item title" href="/2023/08/24/ConfigurationProperties%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/"><span class="title">ConfigurationProperties注解详解</span></a><a class="item title" href="/2023/08/24/HttpClient/"><span class="title">HttpClient 整理笔记</span></a><a class="item title" href="/2023/08/15/hello-world/"><span class="title">Hello World</span></a></div></widget>
+
 
 
 
@@ -100,18 +102,13 @@
 
 
 
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">发布于&nbsp;<time datetime="2023-08-24T07:54:48.000Z">2023-08-24</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">发布于&nbsp;<time datetime="2023-08-24T08:34:25.692Z">2023-08-24</time></div></div>
 
 <article class='md-text content post'>
-<h1 class="article-title"><span>ConfigurationProperties注解详解</span></h1>
-<p>文章参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/skh2015java/article/details/120141409">https://blog.csdn.net/skh2015java/article/details/120141409</a></p>
-<p>@ConfigurationProperties注解用于获取配置文件中的属性定义并绑定到Java Bean上</p>
-<p>该注解适用于具有相同前缀的属性，可以将配置文件中xxx开头的属性绑定到config里</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;gen&quot;)</span></span><br><span class="line"><span class="comment">//将配置文件中所有为gen前缀的属性绑定到类中</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="将属性绑定到-Bean注释的方法上"><a href="#将属性绑定到-Bean注释的方法上" class="headerlink" title="将属性绑定到@Bean注释的方法上"></a>将属性绑定到@Bean注释的方法上</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ConfigProperties</span> &#123;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConfigurationProperties(prefix = &quot;item&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Item <span class="title function_">item</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Item</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 class="article-title"><span>Spring注解@PropertySource</span></h1>
+<p> @PropertySource用于指定资源文件读取的位置   可以读取properties、xml、yml文件 可以通过YAML解析器搭配自定义PropertySourceFactory实现解析YAML文件</p>
+<p>源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.springframework.context.annotation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Documented;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.ElementType;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Repeatable;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Target;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.io.support.PropertySourceFactory;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Repeatable(PropertySources.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> PropertySource &#123;</span><br><span class="line">    String <span class="title function_">name</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;  <span class="comment">//指定资源名称，如果为空 根据基础资源描述生成</span></span><br><span class="line"></span><br><span class="line">    String[] value();  <span class="comment">//指定资源路径 如：classpath:/xxx/xxx  file:/xxx/xxx</span></span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">ignoreResourceNotFound</span><span class="params">()</span> <span class="keyword">default</span> <span class="literal">false</span>;  <span class="comment">//是否忽略资源不存在的情况，如果不忽略 资源不存在就报错 默认为不忽略</span></span><br><span class="line"></span><br><span class="line">    String <span class="title function_">encoding</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>; <span class="comment">//指定文件编码格式 不指定就使用文件默认的</span></span><br><span class="line"></span><br><span class="line">    Class&lt;? <span class="keyword">extends</span> <span class="title class_">PropertySourceFactory</span>&gt; factory() <span class="keyword">default</span> PropertySourceFactory.class;  <span class="comment">//指定资源工厂 不指定就使用默认工厂</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -121,7 +118,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2023/08/24/PropertySource%E6%B3%A8%E8%A7%A3/">Spring注解@PropertySource</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/08/24/HttpClient/">HttpClient 整理笔记</a></div></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/08/24/ConfigurationProperties%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3/">ConfigurationProperties注解详解</a></div></section></div>
 
 
 
