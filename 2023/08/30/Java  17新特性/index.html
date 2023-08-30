@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.19.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>Java 17 新特性 - Ice's Blog</title>
+
+  
+    <meta name="description" content="Java  17新特性Sealed类它可以限制一个类的子类的数量，从而提高代码的安全性和可维护性。Sealed类可以通过sealed关键字来定义，然后使用permits子句来指定允许继承的子类。 123456789public sealed class Animals permits Dogs,Cats&amp;#123;	&#x2F;&#x2F;Animals类定义&amp;#125;public final class Dogs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 17 新特性">
+<meta property="og:url" content="http://example.com/2023/08/30/Java%20%2017%E6%96%B0%E7%89%B9%E6%80%A7/index.html">
+<meta property="og:site_name" content="Ice&#39;s Blog">
+<meta property="og:description" content="Java  17新特性Sealed类它可以限制一个类的子类的数量，从而提高代码的安全性和可维护性。Sealed类可以通过sealed关键字来定义，然后使用permits子句来指定允许继承的子类。 123456789public sealed class Animals permits Dogs,Cats&amp;#123;	&#x2F;&#x2F;Animals类定义&amp;#125;public final class Dogs">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-30T02:17:48.477Z">
+<meta property="article:modified_time" content="2023-08-30T02:17:28.978Z">
+<meta property="article:author" content="Ice">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/lxgw-wenkai-screen-webfont/1.6.0/lxgwwenkaiscreen.css" media="print" onload="this.media='all'">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">Ice's Blog</div></a></div>
+
+<nav class="menu dis-select"></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">Java 17 新特性</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Sealed%E7%B1%BB"><span class="toc-text">Sealed类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pattern-Matching-for-instanceof"><span class="toc-text">Pattern Matching for instanceof</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E7%9A%84%E6%94%B9%E8%BF%9B"><span class="toc-text">垃圾回收器的改进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Http-2%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-text">Http&#x2F;2客户端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vector-API"><span class="toc-text">Vector API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Switch%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E5%A2%9E%E5%BC%BA"><span class="toc-text">Switch表达式的增强</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE-%E5%8D%9A%E5%AE%A2"><span class="toc-text">参考文献&#x2F;博客</span></a></li></ol></li></ol></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">发布于&nbsp;<time datetime="2023-08-30T02:17:48.477Z">2023-08-30</time></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>Java 17 新特性</span></h1>
+<h1 id="Java-17新特性"><a href="#Java-17新特性" class="headerlink" title="Java  17新特性"></a>Java  17新特性</h1><h2 id="Sealed类"><a href="#Sealed类" class="headerlink" title="Sealed类"></a>Sealed类</h2><p>它可以限制一个类的子类的数量，从而提高代码的安全性和可维护性。Sealed类可以通过sealed关键字来定义，然后使用permits子句来指定允许继承的子类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">sealed</span> <span class="keyword">class</span> <span class="title class_">Animals</span> <span class="keyword">permits</span> Dogs,Cats&#123;</span><br><span class="line">	<span class="comment">//Animals类定义</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">Dogs</span> <span class="keyword">extends</span> <span class="title class_">Animals</span>&#123;</span><br><span class="line">	<span class="comment">//Dogs类的定义</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">Cats</span> <span class="keyword">extends</span> <span class="title class_">Animals</span>&#123;</span><br><span class="line">	<span class="comment">//Cats类的定义</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面示例的代码中，Animals被声明为sealed类，它只允许Dogs和Cats这两个类继承。除了这两个类 没有其它类可以继承Animals类。</p>
+<h2 id="Pattern-Matching-for-instanceof"><a href="#Pattern-Matching-for-instanceof" class="headerlink" title="Pattern Matching for instanceof"></a>Pattern Matching for instanceof</h2><p>它可以让开发人员更方便地使用 instanceof 运算符来进行类型匹配。这个特性可以让开发人员使用类似switch语句进行类型匹配，减少代码的错误率与复杂度</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (obj <span class="keyword">instanceof</span> String str)&#123;</span><br><span class="line">	<span class="comment">//obj是一个字符串，可以使用str变量访问</span></span><br><span class="line">    sout(str.length());</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="comment">//obj不是字符串</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面示例代码中，使用 instanceof 运算符判断obj是否是一个字符串，如果是，我们可以使用str变量来访问它。 不同于以往的是  以前是直接判断左边对象是否是右边类的实例 判断类型，现在如果是右边类型的话可以使用变量进行访问。</p>
+<h2 id="垃圾回收器的改进"><a href="#垃圾回收器的改进" class="headerlink" title="垃圾回收器的改进"></a>垃圾回收器的改进</h2><p>Java 17对垃圾回收器进行了改进，其中包括对垃圾回收器的性能和内存利用率进行优化。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个大对象</span></span><br><span class="line"><span class="type">byte</span>[] bigObject = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">1024</span> * <span class="number">1024</span> * <span class="number">100</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 手动触发垃圾回收</span></span><br><span class="line">System.gc();</span><br></pre></td></tr></table></figure>
+
+<h2 id="Http-2客户端"><a href="#Http-2客户端" class="headerlink" title="Http&#x2F;2客户端"></a>Http&#x2F;2客户端</h2><p>该特性可以让开发人员更方便地使用HTTP&#x2F;2协议来进行网络通信。HTTP&#x2F;2客户端可以提供更快的网络传输速度和更低的延迟，从而提高应用程序的性能和用户体验。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建Http/2 客户端</span></span><br><span class="line"><span class="type">HttpClient</span> <span class="variable">client</span> <span class="operator">=</span> HttpClient.newHttpClient();</span><br><span class="line"><span class="comment">//创建一个Http请求</span></span><br><span class="line"><span class="type">HttpRequest</span> <span class="variable">request</span> <span class="operator">=</span> HttpRequest.newBuilder()</span><br><span class="line">    			.uri(URI.create(<span class="string">&quot;https://www.example.com&quot;</span>))</span><br><span class="line">    			.build();</span><br><span class="line"><span class="comment">//发送Http 请求并获取响应</span></span><br><span class="line">HttpResponse&lt;String&gt; response = client.send(request,HttpResponse.BodyHandlers.ofString());</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出响应内容</span></span><br><span class="line">sout(response.body());</span><br></pre></td></tr></table></figure>
+
+<h2 id="Vector-API"><a href="#Vector-API" class="headerlink" title="Vector API"></a>Vector API</h2><p>这个特性可以让开发人员更方便地使用向量来操作数据处理，Vector 提供了更好的性能与更高的并行性，从而加速数据处理过程。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个Vector</span></span><br><span class="line">Vector&lt;Float&gt; vector=Vector.of(<span class="number">1.0f</span>,<span class="number">2.0f</span>,<span class="number">3.0f</span>,<span class="number">4.0f</span>);</span><br><span class="line"><span class="comment">//对Vector中的元素进行操作</span></span><br><span class="line">Vector&lt;Float&gt; result= vector.map(x -&gt; x*<span class="number">2</span>).add(Vector.of(<span class="number">1.0f</span>,<span class="number">1.0f</span>,<span class="number">1.0f</span>,<span class="number">1.0f</span>));</span><br><span class="line"><span class="comment">//输出</span></span><br><span class="line">sout(result);</span><br></pre></td></tr></table></figure>
+
+<p>在上面的示例代码中，我们创建了一个 Vector，并对其进行了一些操作，包括对每个元素乘以 2，然后加上另一个 Vector。</p>
+<h2 id="Switch表达式的增强"><a href="#Switch表达式的增强" class="headerlink" title="Switch表达式的增强"></a>Switch表达式的增强</h2><p>Java 17中对Switch 表达式进行了增强，其中包括对 Switch 表达式的模式匹配进行了优化。这些改进可以让开发人员更方便地使用 Switch 表达式来进行条件判断和分支控制。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">dayOfWeek</span> <span class="operator">=</span><span class="number">1</span>;</span><br><span class="line">String dayName=<span class="keyword">switch</span>(dayOfWeek)&#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span> -&gt; <span class="string">&quot;Monday&quot;</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span> -&gt; <span class="string">&quot;Tuesday&quot;</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span> -&gt; <span class="string">&quot;Wednesday&quot;</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span> -&gt; <span class="string">&quot;Thursday&quot;</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span> -&gt; <span class="string">&quot;Friday&quot;</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span> -&gt; <span class="string">&quot;Saturday&quot;</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">7</span> -&gt; <span class="string">&quot;Sunday&quot;</span>;</span><br><span class="line">        <span class="keyword">default</span> -&gt; <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Invalid day of week: &quot;</span> + dayOfWeek);&#125;;</span><br><span class="line">        Sout(dayName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="参考文献-博客"><a href="#参考文献-博客" class="headerlink" title="参考文献&#x2F;博客"></a>参考文献&#x2F;博客</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42055933/article/details/131407352">https://blog.csdn.net/qq_42055933/article/details/131407352</a></p>
+
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/08/24/PropertySource%E6%B3%A8%E8%A7%A3/">Spring注解@PropertySource</a></div></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = stellar.config.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.19.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.19.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+    root : '/',
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.copycode = Object.assign({"enable":true,"js":"/js/plugins/copycode.js","default_text":"Copy","success_text":"Copied"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
